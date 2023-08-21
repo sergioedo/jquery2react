@@ -8,19 +8,20 @@ const characters = [
 ];
 
 const App = () => {
-  const [totalValue, setTotalValue] = useState(13.5);
+  const [selectedCharacterIndex, setSelectedCharacterIndex] = useState(0);
+  const totalValue = characters[selectedCharacterIndex].price;
   return (
     <>
       <h1>Calculadora de precios de muñecos cabezones</h1>
 
       <div>
         <label>Elige un personaje:</label>
-        <select onChange={(e) => setTotalValue(Number(e.target.value))}>
-          {characters.map((character) => {
+        <select onChange={(e) => setSelectedCharacterIndex(Number(e.target.value))}>
+          {characters.map((character, index) => {
             return (
               <option
                 key={character.name}
-                value={character.price}
+                value={index}
               >{`${character.name} (${character.price}€)`}</option>
             );
           })}
