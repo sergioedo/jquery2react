@@ -15,8 +15,10 @@ const App = () => {
   const showDragonOption = selectedCharacterIndex === 1;
   const [includeDragon, setIncludeDragon] = useState(false);
 
+  const [quantity, setQuantity] = useState(1);
+
   const totalValue =
-    selectedCharacter.price + (showDragonOption && includeDragon ? DRAGON_PRICE : 0);
+    (selectedCharacter.price + (showDragonOption && includeDragon ? DRAGON_PRICE : 0)) * quantity;
   return (
     <>
       <h1>Calculadora de precios de muñecos cabezones</h1>
@@ -45,6 +47,16 @@ const App = () => {
           <label htmlFor="dragon">Con dragón en el hombro ({DRAGON_PRICE}€ más)</label>
         </div>
       )}
+
+      <div>
+        <label htmlFor="quantity">Cantidad:</label>
+        <input
+          type="number"
+          min="1"
+          value={quantity}
+          onChange={(e) => setQuantity(Number(e.target.value))}
+        />
+      </div>
 
       <div>
         Precio total: <span>{totalValue.toFixed(2)}€</span>
