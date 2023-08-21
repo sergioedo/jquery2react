@@ -35,10 +35,16 @@ const App = () => {
         </select>
       </div>
 
-      <div style={{ display: showDragonOption ? "block" : "none" }}>
-        <input type="checkbox" onChange={(e) => setIncludeDragon(e.target.checked)} />
-        <label htmlFor="dragon">Con dragón en el hombro ({DRAGON_PRICE}€ más)</label>
-      </div>
+      {showDragonOption && (
+        <div>
+          <input
+            type="checkbox"
+            checked={includeDragon}
+            onChange={(e) => setIncludeDragon(e.target.checked)}
+          />
+          <label htmlFor="dragon">Con dragón en el hombro ({DRAGON_PRICE}€ más)</label>
+        </div>
+      )}
 
       <div>
         Precio total: <span>{totalValue.toFixed(2)}€</span>
