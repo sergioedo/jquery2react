@@ -6,10 +6,17 @@ const characters = [
   { name: "Danerys Targaryen", price: 16.5 },
   { name: "Tyrion Lannister", price: 19 },
 ];
+const DRAGON_PRICE = 44.5;
 
 const App = () => {
   const [selectedCharacterIndex, setSelectedCharacterIndex] = useState(0);
-  const totalValue = characters[selectedCharacterIndex].price;
+  const selectedCharacter = characters[selectedCharacterIndex];
+
+  const showDragonOption = selectedCharacterIndex === 1;
+  const [includeDragon, setIncludeDragon] = useState(false);
+
+  const totalValue =
+    selectedCharacter.price + (showDragonOption && includeDragon ? DRAGON_PRICE : 0);
   return (
     <>
       <h1>Calculadora de precios de muñecos cabezones</h1>
@@ -26,6 +33,11 @@ const App = () => {
             );
           })}
         </select>
+      </div>
+
+      <div style={{ display: showDragonOption ? "block" : "none" }}>
+        <input type="checkbox" onChange={(e) => setIncludeDragon(e.target.checked)} />
+        <label htmlFor="dragon">Con dragón en el hombro ({DRAGON_PRICE}€ más)</label>
       </div>
 
       <div>
