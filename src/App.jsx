@@ -1,6 +1,12 @@
 import { useState } from "react";
 import "./App.css";
 
+const characters = [
+  { name: "Jon Snow", price: 13.5 },
+  { name: "Danerys Targaryen", price: 16.5 },
+  { name: "Tyrion Lannister", price: 19 },
+];
+
 const App = () => {
   const [totalValue, setTotalValue] = useState(13.5);
   return (
@@ -10,9 +16,14 @@ const App = () => {
       <div>
         <label>Elige un personaje:</label>
         <select onChange={(e) => setTotalValue(Number(e.target.value))}>
-          <option value="13.5">Jon Snow (13.5€)</option>
-          <option value="16.5">Danerys Targaryen (16.5€)</option>
-          <option value="19">Tyrion Lannister (19€)</option>
+          {characters.map((character) => {
+            return (
+              <option
+                key={character.name}
+                value={character.price}
+              >{`${character.name} (${character.price}€)`}</option>
+            );
+          })}
         </select>
       </div>
 
