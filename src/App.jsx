@@ -1,5 +1,15 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import "./App.css";
+
+const getRandomCountry = async () => {
+  const response = await fetch("https://random-data-api.com/api/v2/addresses");
+  const country = await response.json();
+  return { name: country.country, code: country.country_code };
+};
+const DEFAULT_COUNTRY = {
+  name: "Spain",
+  code: "ES",
+};
 
 const characters = [
   { name: "Jon Snow", price: 13.5 },
@@ -17,8 +27,22 @@ const App = () => {
 
   const [quantity, setQuantity] = useState(1);
 
-  const totalValue =
-    (selectedCharacter.price + (showDragonOption && includeDragon ? DRAGON_PRICE : 0)) * quantity;
+  const [country, setCountry] = useState(DEFAULT_COUNTRY);
+
+  useEffect(() => {
+    const setInitialCountry = async () => {
+      const country = await getRandomCountry();
+      setCountry(country);
+    };
+    setInitialCountry();
+  }, []);
+
+  const extraDragon = showDragonOption && includeDragon ? DRAGON_PRICE : 0;
+  const totalValue = (selectedCharacter.price + extraDragon) * quantity;
+
+  const countryLetter = country.name.charAt(0).toLowerCase();
+  const taxPercentage = ["a", "e", "i", "o", "u"].includes(countryLetter) ? 10 : 20;
+  const totalValueWithTaxes = totalValue + totalValue * (taxPercentage / 100);
   return (
     <>
       <h1>Calculadora de precios de muñecos cabezones</h1>
@@ -59,7 +83,16 @@ const App = () => {
       </div>
 
       <div>
-        Precio total: <span>{totalValue.toFixed(2)}€</span>
+        Impuesto: <span>{taxPercentage}%</span>
+        <span>
+          {country?.code && (
+            <img width="16px" src={`https://flagsapi.com/${country.code}/flat/64.png`} />
+          )}
+        </span>
+      </div>
+
+      <div>
+        Precio total: <span>{totalValueWithTaxes.toFixed(2)}€</span>
       </div>
     </>
   );
