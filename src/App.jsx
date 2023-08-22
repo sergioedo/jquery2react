@@ -11,6 +11,20 @@ const DEFAULT_COUNTRY = {
   code: "ES",
 };
 
+const useRandomCountry = (defaultCountry = DEFAULT_COUNTRY) => {
+  const [country, setCountry] = useState(defaultCountry);
+
+  useEffect(() => {
+    const setInitialCountry = async () => {
+      const country = await getRandomCountry();
+      setCountry(country);
+    };
+    setInitialCountry();
+  }, []);
+
+  return { country };
+};
+
 const characters = [
   { name: "Jon Snow", price: 13.5 },
   { name: "Danerys Targaryen", price: 16.5 },
@@ -27,15 +41,7 @@ const App = () => {
 
   const [quantity, setQuantity] = useState(1);
 
-  const [country, setCountry] = useState(DEFAULT_COUNTRY);
-
-  useEffect(() => {
-    const setInitialCountry = async () => {
-      const country = await getRandomCountry();
-      setCountry(country);
-    };
-    setInitialCountry();
-  }, []);
+  const { country } = useRandomCountry();
 
   const extraDragon = showDragonOption && includeDragon ? DRAGON_PRICE : 0;
   const totalValue = (selectedCharacter.price + extraDragon) * quantity;
