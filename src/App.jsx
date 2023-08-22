@@ -1,6 +1,6 @@
 import { useState } from "react";
 import "./App.css";
-import useRandomCountry from "./hooks/useRandomCountry";
+import useTaxes from "./hooks/useTaxes";
 
 const characters = [
   { name: "Jon Snow", price: 13.5 },
@@ -18,13 +18,11 @@ const App = () => {
 
   const [quantity, setQuantity] = useState(1);
 
-  const { country } = useRandomCountry();
+  const { taxPercentage, country } = useTaxes();
 
   const extraDragon = showDragonOption && includeDragon ? DRAGON_PRICE : 0;
   const totalValue = (selectedCharacter.price + extraDragon) * quantity;
 
-  const countryLetter = country.name.charAt(0).toLowerCase();
-  const taxPercentage = ["a", "e", "i", "o", "u"].includes(countryLetter) ? 10 : 20;
   const totalValueWithTaxes = totalValue + totalValue * (taxPercentage / 100);
   return (
     <>
