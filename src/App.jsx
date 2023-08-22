@@ -1,29 +1,6 @@
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import "./App.css";
-
-const getRandomCountry = async () => {
-  const response = await fetch("https://random-data-api.com/api/v2/addresses");
-  const country = await response.json();
-  return { name: country.country, code: country.country_code };
-};
-const DEFAULT_COUNTRY = {
-  name: "Spain",
-  code: "ES",
-};
-
-const useRandomCountry = (defaultCountry = DEFAULT_COUNTRY) => {
-  const [country, setCountry] = useState(defaultCountry);
-
-  useEffect(() => {
-    const setInitialCountry = async () => {
-      const country = await getRandomCountry();
-      setCountry(country);
-    };
-    setInitialCountry();
-  }, []);
-
-  return { country };
-};
+import useRandomCountry from "./hooks/useRandomCountry";
 
 const characters = [
   { name: "Jon Snow", price: 13.5 },
