@@ -4,7 +4,7 @@ import useTaxes from "./hooks/useTaxes";
 
 const characters = [
   { name: "Jon Snow", price: 13.5 },
-  { name: "Danerys Targaryen", price: 16.5 },
+  { name: "Danerys Targaryen", price: 16.5, dragonOption: true },
   { name: "Tyrion Lannister", price: 19 },
 ];
 const DRAGON_PRICE = 44.5;
@@ -13,14 +13,13 @@ const App = () => {
   const [selectedCharacterIndex, setSelectedCharacterIndex] = useState(0);
   const selectedCharacter = characters[selectedCharacterIndex];
 
-  const showDragonOption = selectedCharacterIndex === 1;
   const [includeDragon, setIncludeDragon] = useState(false);
 
   const [quantity, setQuantity] = useState(1);
 
   const { taxPercentage, country } = useTaxes();
 
-  const extraDragon = showDragonOption && includeDragon ? DRAGON_PRICE : 0;
+  const extraDragon = selectedCharacter.dragonOption && includeDragon ? DRAGON_PRICE : 0;
   const totalValue = (selectedCharacter.price + extraDragon) * quantity;
 
   const totalValueWithTaxes = totalValue + totalValue * (taxPercentage / 100);
@@ -42,7 +41,7 @@ const App = () => {
         </select>
       </div>
 
-      {showDragonOption && (
+      {selectedCharacter.dragonOption && (
         <div>
           <input
             type="checkbox"
