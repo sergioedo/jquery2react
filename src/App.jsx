@@ -10,8 +10,7 @@ const characters = [
 const DRAGON_PRICE = 44.5;
 
 const App = () => {
-  const [selectedCharacterIndex, setSelectedCharacterIndex] = useState(0);
-  const selectedCharacter = characters[selectedCharacterIndex];
+  const [selectedCharacter, setSelectedCharacter] = useState(characters[0]);
 
   const [includeDragon, setIncludeDragon] = useState(false);
 
@@ -29,7 +28,7 @@ const App = () => {
 
       <div>
         <label>Elige un personaje:</label>
-        <select onChange={(e) => setSelectedCharacterIndex(Number(e.target.value))}>
+        <select onChange={(e) => setSelectedCharacter(characters[Number(e.target.value)])}>
           {characters.map((character, index) => {
             return (
               <option
