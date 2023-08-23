@@ -10,25 +10,43 @@ const characters = [
 const DRAGON_PRICE = 44.5;
 
 const App = () => {
-  const [selectedCharacter, setSelectedCharacter] = useState(characters[0]);
-
-  const [includeDragon, setIncludeDragon] = useState(false);
+  const [selectedProduct, setSelectedProduct] = useState({
+    character: characters[0],
+    includeDragon: false,
+  });
 
   const [quantity, setQuantity] = useState(1);
 
   const { taxPercentage, country } = useTaxes();
 
+  const { character: selectedCharacter, includeDragon } = selectedProduct;
   const extraDragon = selectedCharacter.dragonOption && includeDragon ? DRAGON_PRICE : 0;
   const totalValue = (selectedCharacter.price + extraDragon) * quantity;
 
   const totalValueWithTaxes = totalValue + totalValue * (taxPercentage / 100);
+
+  const handleCharacterSelected = (e) => {
+    const selectedCharacter = characters[Number(e.target.value)];
+    setSelectedProduct({
+      character: selectedCharacter,
+      includeDragon: false, //cada vez que cambiamos, reseteamos el complemento del dragon
+    });
+  };
+
+  const handleWithDragonChanged = (e) => {
+    setSelectedProduct({
+      character: selectedProduct.character,
+      includeDragon: e.target.checked,
+    });
+  };
+
   return (
     <>
       <h1>Calculadora de precios de muñecos cabezones</h1>
 
       <div>
         <label>Elige un personaje:</label>
-        <select onChange={(e) => setSelectedCharacter(characters[Number(e.target.value)])}>
+        <select onChange={handleCharacterSelected}>
           {characters.map((character, index) => {
             return (
               <option
@@ -42,11 +60,7 @@ const App = () => {
 
       {selectedCharacter.dragonOption && (
         <div>
-          <input
-            type="checkbox"
-            checked={includeDragon}
-            onChange={(e) => setIncludeDragon(e.target.checked)}
-          />
+          <input type="checkbox" checked={includeDragon} onChange={handleWithDragonChanged} />
           <label htmlFor="dragon">Con dragón en el hombro ({DRAGON_PRICE}€ más)</label>
         </div>
       )}
