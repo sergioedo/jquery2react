@@ -1,28 +1,23 @@
 import { useState } from "react";
 import "./App.css";
 import useTaxes from "./hooks/useTaxes";
-
-const characters = [
-  { name: "Jon Snow", price: 13.5 },
-  { name: "Danerys Targaryen", price: 16.5, dragonOption: true },
-  { name: "Tyrion Lannister", price: 19 },
-];
-const DRAGON_PRICE = 44.5;
+import { characters, DRAGON_PRICE } from "./model/characters";
+import useProduct from "./hooks/useProduct";
 
 const App = () => {
-  const [selectedProduct, setSelectedProduct] = useState({
-    character: characters[0],
-    includeDragon: false,
-  });
+  const {
+    product: selectedProduct,
+    setProduct: setSelectedProduct,
+    productPrice: selectedProductPrice,
+  } = useProduct();
 
   const [quantity, setQuantity] = useState(1);
 
   const { taxPercentage, country } = useTaxes();
 
   const { character: selectedCharacter, includeDragon } = selectedProduct;
-  const extraDragon = selectedCharacter.dragonOption && includeDragon ? DRAGON_PRICE : 0;
-  const totalValue = (selectedCharacter.price + extraDragon) * quantity;
 
+  const totalValue = selectedProductPrice * quantity;
   const totalValueWithTaxes = totalValue + totalValue * (taxPercentage / 100);
 
   const handleCharacterSelected = (e) => {
@@ -33,7 +28,7 @@ const App = () => {
     });
   };
 
-  const handleWithDragonChanged = (e) => {
+  const handleIncludeDragonChanged = (e) => {
     setSelectedProduct({
       character: selectedProduct.character,
       includeDragon: e.target.checked,
@@ -60,7 +55,7 @@ const App = () => {
 
       {selectedCharacter.dragonOption && (
         <div>
-          <input type="checkbox" checked={includeDragon} onChange={handleWithDragonChanged} />
+          <input type="checkbox" checked={includeDragon} onChange={handleIncludeDragonChanged} />
           <label htmlFor="dragon">Con dragón en el hombro ({DRAGON_PRICE}€ más)</label>
         </div>
       )}
